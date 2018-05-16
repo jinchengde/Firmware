@@ -1499,8 +1499,28 @@ Mission::need_to_reset_mission(bool active)
 		return true;
 
 	} else if (_navigator->get_vstatus()->arming_state == vehicle_status_s::ARMING_STATE_ARMED && active) {
-		/* mission is running, need reset after disarm */
-		_need_mission_reset = true;
+		/* mission item that comes after current if available */
+		struct mission_item_s mission_item_next_position;
+		bool has_next_position_item = false;
+		if(prepare_mission_items(&_mission_item, &mission_item_next_position, &has_next_position_item))
+		{
+			/* mission is running, need reset after disarm */
+			_need_mission_reset = true;
+			return false;
+		}else{
+			/* no mission available or mission finished, reset mission */
+			if (_navigator->get_land_detected()->landed)
+			{
+				/* landing detected, waiting for disarm */
+				_need_mission_reset = true;
+				return false;
+			}else{
+				/* no mission available and loitering, need to reset mission */
+				_need_mission_reset = false;
+				return true;
+			}
+		}
+		
 	}
 
 	return false;
