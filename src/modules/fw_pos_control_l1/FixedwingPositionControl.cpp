@@ -158,6 +158,38 @@ FixedwingPositionControl::vehicle_control_mode_poll()
 }
 
 void
+FixedwingPositionControl::vehicle_manual_poll()
+{
+	if (_manual_control_sub.updated()) {
+		_manual_control_sub.copy(&_manual);
+		handle_manual();
+	}
+}
+
+void
+FixedwingPositionControl::handle_manual()
+{
+	if (_control_mode.flag_control_auto_enabled &&
+	    _pos_sp_triplet.next.valid &&
+	    _pos_sp_triplet.next.type == position_setpoint_s::SETPOINT_TYPE_LAND) {
+		_throttle_before_land = _manual.z;
+	}
+
+	if (_control_mode.flag_control_auto_enabled &&
+	    _pos_sp_triplet.current.valid &&
+	    _pos_sp_triplet.current.type == position_setpoint_s::SETPOINT_TYPE_LAND) {
+		if (_manual.z > _param_land_goaround_threshold.get() &&
+		    _throttle_before_land < _param_land_goaround_threshold.get()) {
+			abort_landing(true);
+
+		} else if (_manual.z < _param_land_goaround_threshold.get()) {
+			_throttle_before_land = _manual.z;
+		}
+	}
+}
+
+
+void
 FixedwingPositionControl::vehicle_command_poll()
 {
 	if (_vehicle_command_sub.updated()) {
@@ -1516,6 +1548,7 @@ FixedwingPositionControl::Run()
 		airspeed_poll();
 		_manual_control_sub.update(&_manual);
 		_pos_sp_triplet_sub.update(&_pos_sp_triplet);
+		vehicle_manual_poll();
 		vehicle_attitude_poll();
 		vehicle_command_poll();
 		vehicle_control_mode_poll();

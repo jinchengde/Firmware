@@ -394,6 +394,22 @@ PARAM_DEFINE_FLOAT(FW_LND_FL_PMAX, 15.0f);
 PARAM_DEFINE_FLOAT(FW_LND_AIRSPD_SC, 1.3f);
 
 /**
+ * Go around throttle threshold
+ *
+ * The vehicle will go around if the throttle position moves larger than the
+ * threshold during approach. It will trigger when throttle position moves from
+ * below to above the threshold value. For example, a value of 0.9 means
+ * 90% throttle position. Set to a value of 0.0 to disable.
+ * @min 0.0
+ * @max 1.0
+ * @decimal 2
+ * @increment 0.1
+ * @group FW L1 Control
+ */
+PARAM_DEFINE_FLOAT(FW_GOAROUND_THR, 0.0f);
+
+
+/**
  * Throttle time constant factor for landing
  *
  * Set this parameter to less than 1.0 to make the TECS throttle loop react faster during

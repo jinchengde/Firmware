@@ -257,6 +257,8 @@ private:
 	ECL_L1_Pos_Controller	_l1_control;
 	TECS			_tecs;
 
+	float _throttle_before_land{0};
+
 	enum FW_POSCTRL_MODE {
 		FW_POSCTRL_MODE_AUTO,
 		FW_POSCTRL_MODE_POSITION,
@@ -273,6 +275,7 @@ private:
 	// Update subscriptions
 	void		airspeed_poll();
 	void		control_update();
+	void		vehicle_manual_poll();
 	void		vehicle_attitude_poll();
 	void		vehicle_command_poll();
 	void		vehicle_control_mode_poll();
@@ -337,6 +340,9 @@ private:
 	 * Handle incoming vehicle commands
 	 */
 	void		handle_command();
+
+	void		handle_manual();
+
 
 	void		reset_takeoff_state(bool force = false);
 	void		reset_landing_state();
@@ -412,7 +418,9 @@ private:
 		(ParamFloat<px4::params::FW_MAN_P_MAX>) _param_fw_man_p_max,
 		(ParamFloat<px4::params::FW_MAN_R_MAX>) _param_fw_man_r_max,
 
-		(ParamFloat<px4::params::NAV_LOITER_RAD>) _param_nav_loiter_rad
+		(ParamFloat<px4::params::NAV_LOITER_RAD>) _param_nav_loiter_rad,
+
+		(ParamFloat<px4::params::FW_GOAROUND_THR>) _param_land_goaround_threshold
 
 	)
 
