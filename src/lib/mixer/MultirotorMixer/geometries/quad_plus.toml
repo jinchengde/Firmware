@@ -11,19 +11,36 @@ Ct        = 1.0
 Cm        = 0.05
 
 [[rotors]]
-name      = "right"
-position  = [0.0, 1.0, 0.0]
-direction = "CCW"
+name = "right"
+position = [0.0, 0.23, -0.1]
+direction = "CW"
+Ct = 0.46
+Cm = 0.023
 
 [[rotors]]
-name      = "left"
-position  = [0.0, -1.0, 0.0]
-direction = "CCW"
+name = "left"
+position = [0.0, -0.23, -0.1]
+direction = "CCW"
+Ct = 0.46
+Cm = 0.023
 
 [[rotors]]
-name     = "front"
-position = [1.0, 0.0, 0.0]
+name = "front-up"
+position = [0.52, 0.0, -0.1]
+direction = "CW"
+Ct = 0.69
+Cm = 0.0345
 
 [[rotors]]
-name     = "rear"
-position = [-1.0, 0.0, 0.0]
+name = "front-down"
+position = [0.52, 0.0, 0.1]
+direction = "CCW"
+Ct = 0.69
+Cm = 0.0345
+
+[[rotors]]
+name = "rear"
+position = [-0.44, 0.0, 0.1]
+direction = "CCW"
+Ct = 0.9
+Cm = 0
